@@ -1,0 +1,94 @@
+package com.loansapp.main.models;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@Entity
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
+@Table(name = "loans_appends")
+public class LoanAppend {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@Column(name = "debtor_document")
+	private String debtor_document;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "lender_code")
+	private User lender_code;
+	
+	@Column(name = "reason")
+	private String reason;
+	
+	@Column(name = "amount")
+	private Double amount;
+	
+	@Column(name = "fees")
+	private Double fees;
+	
+	public LoanAppend(String _debtor_document, User _lender_code, String _reason, Double _amount, Double _fees) {
+		this.debtor_document = _debtor_document;
+		this.lender_code = _lender_code;
+		this.reason = _reason;
+		this.amount = _amount;
+		this.fees = _fees;
+	}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getDebtor_document() {
+		return debtor_document;
+	}
+
+	public void setDebtor_document(String debtor_document) {
+		this.debtor_document = debtor_document;
+	}
+
+	public User getLender_code() {
+		return lender_code;
+	}
+
+	public void setLender_code(User lender_code) {
+		this.lender_code = lender_code;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
+	public Double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
+
+	public Double getFees() {
+		return fees;
+	}
+
+	public void setFees(Double fees) {
+		this.fees = fees;
+	}
+}
