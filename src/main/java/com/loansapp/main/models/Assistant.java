@@ -1,53 +1,37 @@
 package com.loansapp.main.models;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
-@Table(name = "users")
-public class User {
+@Table(name = "assistants")
+public class Assistant {
 	@Id
 	@Column(name = "document", unique = true, columnDefinition = "VARCHAR(255)")
 	private String document;
 	
-	@Column(name = "firstname")
+	@Column(name = "firstname", columnDefinition = "VARCHAR(255)")
 	private String firstname;
 	
-	@Column(name = "lastname")
+	@Column(name = "lastname", columnDefinition = "VARCHAR(255)")
 	private String lastname;
 	
-	@Column(name = "lender_code", unique = true)
-	private String lender_code;
-	
-	@Column(name = "phone_number", unique=true)
-	private String phone_number;
-	
-	@Column(name = "email", unique = true)
+	@Column(name = "email", unique = true, columnDefinition = "VARCHAR(255)")
 	private String email;
 	
-	@Column(name = "password")
+	@Column(name = "password", columnDefinition = "VARCHAR(255)")
 	private String password;
 	
-	@Column(name = "balance")
-	private Double balance;
-	
 	@ManyToOne
-	@JoinColumn(name = "id_city")
-	private Municipality id_city;
-	
-	@OneToMany(mappedBy = "boss_document", fetch = FetchType.EAGER, targetEntity = Assistant.class)
-	private List<Assistant> assistants;
+	@JoinColumn(name = "boss_document")
+	private User boss_document;
 
 	public String getDocument() {
 		return document;
@@ -73,22 +57,6 @@ public class User {
 		this.lastname = lastname;
 	}
 
-	public String getLender_code() {
-		return lender_code;
-	}
-
-	public void setLender_code(String lender_code) {
-		this.lender_code = lender_code;
-	}
-
-	public String getPhone_number() {
-		return phone_number;
-	}
-
-	public void setPhone_number(String phone_number) {
-		this.phone_number = phone_number;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -105,21 +73,11 @@ public class User {
 		this.password = password;
 	}
 
-	public double getBalance() {
-		return balance;
+	public User getBoss_document() {
+		return boss_document;
 	}
 
-	public void setBalance(double balance) {
-		this.balance = balance;
+	public void setBoss_document(User boss_document) {
+		this.boss_document = boss_document;
 	}
-
-	public Municipality getId_city() {
-		return id_city;
-	}
-
-	public void setId_city(Municipality municipality) {
-		this.id_city = municipality;
-	}
-	
-	
 }

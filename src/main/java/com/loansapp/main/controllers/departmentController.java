@@ -1,6 +1,9 @@
 package com.loansapp.main.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loansapp.main.models.Department;
 import com.loansapp.main.repository.IDepartmentRepository;
 
@@ -37,9 +41,28 @@ public class departmentController {
 	}
 	
 	@PostMapping(path = "/v1/api/departments")
-	public Department create(String department_name) {
-		Department department = new Department(department_name);
-		return departmentRepo.save(department);
+	public HashMap<String, Object> create(String department_name, HttpServletResponse response) {
+		HashMap<String, Object> returnObj = new HashMap<>();
+		try {
+			ObjectMapper obj = new ObjectMapper();
+			if(department_name == null) {
+				response.setStatus(400);
+				returnObj.put("Error", "\"department_name\" parameter is required. Please verify it's send successfully");
+				return returnObj;
+			}else {			
+				response.setStatus(201);
+				Department department = new Department(department_name);
+				returnObj.put("message", "Department created successfully");
+				returnObj.put("departmentInfo", obj.writeValueAsString(departmentRepo.save(department)));
+				return returnObj;
+			}
+		} catch (Exception e) {
+			returnObj.clear();
+			returnObj.put("Error", "An error has been occurred creating department. Maybe department already exists.");
+			
+			return returnObj;
+		}
+		
 	}
 	
 	@DeleteMapping(path = "/v1/api/departments/{id}") 

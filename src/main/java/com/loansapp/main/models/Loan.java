@@ -21,35 +21,36 @@ public class Loan {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "debtor_document", nullable = false)
-	private LoanAppend debtor_document;
+	@Column(name = "debtor_document", nullable = false)
+	private String debtor_document;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "lender_code", nullable = false)
-	private LoanAppend lender_code;
+	@Column(name = "lender_code", nullable = false)
+	private String lender_code;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "reason", nullable = false)
-	private LoanAppend reason;
+	@Column(name = "reason", nullable = false)
+	private String reason;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "payment_amount", nullable = false)
-	private LoanAppend payment_amount;
+	@Column(name = "payment_amount", nullable = false)
+	private Double payment_amount;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "fees", nullable = false)
-	private LoanAppend fees;
+	@Column(name = "fees", nullable = false)
+	private Double fees;
 	
 	@Column(name = "total_payment_amount", nullable = false)
 	private Double total_payment_amount;
 	
-	public Loan(LoanAppend _debtor_document, LoanAppend _lender_code, LoanAppend _reason, LoanAppend _payment_amount, LoanAppend _fees) {
+	public Loan(String _debtor_document, String _lender_code, String _reason, Double _payment_amount, Double _fees) {
 		this.debtor_document = _debtor_document;
 		this.lender_code = _lender_code;
 		this.reason = _reason;
 		this.payment_amount = _payment_amount;
 		this.fees = _fees;
+		
+		this.total_payment_amount = _payment_amount * _fees;
+	}
+	
+	public Loan() {
+		
 	}
 	
 	public Long getId() {
@@ -60,43 +61,43 @@ public class Loan {
 		this.id = id;
 	}
 
-	public LoanAppend getDebtor_document() {
+	public String getDebtor_document() {
 		return debtor_document;
 	}
 
-	public void setDebtor_document(LoanAppend debtor_document) {
+	public void setDebtor_document(String debtor_document) {
 		this.debtor_document = debtor_document;
 	}
 
-	public LoanAppend getLender_code() {
+	public String getLender_code() {
 		return lender_code;
 	}
 
-	public void setLender_code(LoanAppend lender_code) {
+	public void setLender_code(String lender_code) {
 		this.lender_code = lender_code;
 	}
 
-	public LoanAppend getReason() {
+	public String getReason() {
 		return reason;
 	}
 
-	public void setReason(LoanAppend reason) {
+	public void setReason(String reason) {
 		this.reason = reason;
 	}
 
-	public LoanAppend getPayment_amount() {
+	public Double getPayment_amount() {
 		return payment_amount;
 	}
 
-	public void setPayment_amount(LoanAppend payment_amount) {
+	public void setPayment_amount(Double payment_amount) {
 		this.payment_amount = payment_amount;
 	}
 
-	public LoanAppend getFees() {
+	public Double getFees() {
 		return fees;
 	}
 
-	public void setFees(LoanAppend fees) {
+	public void setFees(Double fees) {
 		this.fees = fees;
 	}
 

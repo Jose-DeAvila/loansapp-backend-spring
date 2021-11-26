@@ -33,7 +33,7 @@ public class LoanRequest {
 	@Column(name = "amount")
 	private Double amount;
 	
-	@Column(name = "status")
+	@Column(name = "approved")
 	private Boolean status;
 	
 	@Column(name = "fees")

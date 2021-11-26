@@ -2,7 +2,9 @@ package com.loansapp.main.controllers;
 
 import java.util.List;
 
+import com.loansapp.main.models.Loan;
 import com.loansapp.main.models.LoanRequest;
+import com.loansapp.main.repository.ILoanRepository;
 import com.loansapp.main.repository.ILoanRequestRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class loanRequestController {
     @Autowired
     ILoanRequestRepository loanRequestRepo;
+    
+    @Autowired
+    ILoanRepository loanRepo;
     
     @GetMapping(path = "/v1/api/loan-request")
     public List<LoanRequest> getAll() {
@@ -45,4 +50,21 @@ public class loanRequestController {
 
         return "Loan request deleted";
     }
+    
+    @PostMapping(path = "/v1/api/loan-request/aprrove/{id}")
+    public Loan approve(@PathVariable("id") Long id) {
+    	LoanRequest loanGetted = loanRequestRepo.getById(id);
+    	loanGetted.setStatus(true);
+    	loanRequestRepo.save(loanGetted);
+    	Loan loanToSave = new Loan();
+    	loanToSave.setDebtor_document(loanGetted.getUser_document().getDocument());
+    	loanToSave.setFees(loanGetted.getFees());
+    	loanToSave.setLender_code(loanGetted.getLender_code());
+    	loanToSave.setPayment_amount(loanGetted.getAmount());
+    	loanToSave.setReason(loanGetted.getReason());
+    	loanToSave.setTotal_ayment_amount(loanGetted.getAmount() * loanGetted.getFees());
+    	
+    	return loanRepo.save(loanToSave);
+    }
 }
+

@@ -3,6 +3,8 @@ package com.loansapp.main.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +19,12 @@ import com.loansapp.main.repository.IUserRepository;
 
 @RestController
 public class userController {
+	
+	PasswordEncoder encoder;
+	
+	public userController() {
+		this.encoder = new BCryptPasswordEncoder();
+	}
 	
 	@Autowired
 	IUserRepository userRepo;
@@ -52,6 +60,7 @@ public class userController {
     @PostMapping(path = "/v1/api/users")
     public User create(String email, String firstname, String lastname, String lender_code, String password, String phone_number, Long id_city, String document) {
     	Municipality municipality = municipalityRepo.getById(id_city);
+    	String encodedPassword = this.encoder.encode(password);
     	
     	User user = new User();
     	user.setDocument(document);
@@ -60,7 +69,7 @@ public class userController {
     	user.setFirstname(firstname);
    		user.setLastname(lastname);
     	user.setLender_code(lender_code);
-   		user.setPassword(password);
+   		user.setPassword(encodedPassword);
    		user.setPhone_number(phone_number);
     	user.setId_city(municipality);
     		

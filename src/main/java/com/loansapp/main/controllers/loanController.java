@@ -22,6 +22,11 @@ public class loanController {
     public List<Loan> getAll() {
         return loanRepo.findAll();
     }
+    
+    @GetMapping(path = "/v1/api/loans/{debtor_document}")
+    public List<Loan> getByDebtorDocument(@PathVariable("debtor_document") String debtor_document) {
+    	return loanRepo.findByDebtor_document(debtor_document);
+    }
 
     @GetMapping(path = "/v1/api/loans/{id}")
     public Loan getById(@PathVariable("id") Long id) {
